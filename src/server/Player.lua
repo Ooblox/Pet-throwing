@@ -1,6 +1,8 @@
 local Dss = game:GetService("DataStoreService")
 local Ds = Dss:GetDataStore("Players")
 
+local CreateClass = require(game.ReplicatedStorage.Shared.CreateClass)
+
 return function(self)
     self.Instance = nil
     self.Data = nil
