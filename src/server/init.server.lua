@@ -3,27 +3,7 @@ local Players = game:GetService("Players")
 local Ds = Dss:GetDataStore("Players")
 
 local CreateClass = require(game.ReplicatedStorage.Shared.CreateClass)
-
-local PlayerClass = CreateClass(function(self)
-    self.Instance = nil
-    self.Data = nil
-
-    self.BaseData = {
-        OwnedPets = {}
-    }
-
-    self.SaveData = function()
-        Ds:SetAsync(self.Instance.UserId, self.Data)
-    end
-
-    self.LoadData = function()
-        
-    end
-
-    self.LoadPets = function()
-        
-    end
-end)
+local PlayerClass = CreateClass(require(script.Player))
 
 local PlayersManagerClass = CreateClass(function(self)
     self.CurrentPlayerObjects = {}
