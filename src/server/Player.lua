@@ -12,7 +12,10 @@ return function(self)
     self.Data = nil
 
     self.BaseData = {
-        OwnedPets = {"Pet"}
+        OwnedPets = {"Pet"},
+        PetMultiplier = 1,
+        Coins = 0,
+        Strength = 5,
     }
 
     self.SaveData = function()

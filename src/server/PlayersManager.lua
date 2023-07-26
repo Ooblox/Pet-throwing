@@ -1,3 +1,4 @@
+local TextService = game:GetService("TextService")
 local CreateClass = require(game.ReplicatedStorage.Shared.CreateClass)
 local PlayerClass = CreateClass(require(script.Parent.Player))
 
@@ -24,8 +25,37 @@ return function(self)
         end)
     end
     
+    self.PlayerDataInterface = function()
+        game.ReplicatedStorage.LocalSignals.InteractPlayerData.OnInvoke = function(PlayerInst, Data, Type)
+            for i, v in pairs(self.CurrentPlayerObjects) do
+                if v.Instance == PlayerInst then
+                    if Type == "Replace" then
+                        for i, v in pairs(Data) do
+                            v.Data[i] = v
+                        end
+                    elseif Type == "Add" then
+                        for i, v in pairs(Data) do
+                            v.Data[i] += v
+                        end                      
+                    end
+
+                    return v.Data
+                end
+            end
+        end 
+
+        game.ReplicatedStorage.RemoteSignals.GetPlayerData.OnInvoke = function(PlayerInst)
+            for i, v in pairs(self.CurrentPlayerObjects) do
+                if v.Instance == PlayerInst then
+                    return v.Data
+                end
+            end
+        end 
+    end
+
     self.Initiate = function()
         self.PlayerJoiningManager()
         self.PlayerRemovingManager()
+        self.PlayerDataInterface()
     end
 end
