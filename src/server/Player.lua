@@ -1,10 +1,12 @@
 local Dss = game:GetService("DataStoreService")
+local Players = game:GetService("Players")
 local Ds = Dss:GetDataStore("Players")
 
 local CreateClass = require(game.ReplicatedStorage.Shared.CreateClass)
 local PetClass = CreateClass(require(script.Parent.Pet))
 
 return function(self)
+    self.USE_SAVED_DATA = false
     self.Instance = nil
     self.Character = nil
     self.Data = nil
@@ -14,15 +16,21 @@ return function(self)
     }
 
     self.SaveData = function()
-        Ds:SetAsync(self.Instance.UserId, self.Data)
+        if self.USE_SAVED_DATA then
+            Ds:SetAsync(self.Instance.UserId, self.Data)
+        end
     end
 
     self.LoadData = function()
         print(self.Instance)
         local SavedData = Ds:GetAsync(self.Instance.UserId)
 
-        if SavedData then
-            self.Data = SavedData
+        if self.USE_SAVED_DATA then
+            if SavedData then
+                self.Data = SavedData
+            else
+                self.Data = self.BaseData
+            end
         else
             self.Data = self.BaseData
         end
@@ -40,11 +48,8 @@ return function(self)
         local PetFolder = Instance.new("Folder", self.Character)
         PetFolder.Name = "Pets"
 
-        local PetPositions = Instance.new("Folder", self.Character)
-        PetPositions.Name = "PetPositions"
-
         for i = 1, 4 do
-            local PetPos = Instance.new("Attachment", self.Character.PetPositions)
+            local PetPos = Instance.new("Attachment", self.Character:WaitForChild("HumanoidRootPart"))
             PetPos.Name = i
             Instance.new("BoolValue", PetPos).Name = "Occupied"
 
@@ -61,7 +66,7 @@ return function(self)
 
         for i, v in pairs(self.Data.OwnedPets) do
             local NewPet = PetClass.new()
-            NewPet.Spawn(v)
+            NewPet.Spawn(v, self)
         end
     end
 
