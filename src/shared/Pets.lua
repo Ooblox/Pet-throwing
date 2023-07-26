@@ -4,8 +4,10 @@ local CreateClass = require(script.Parent.CreateClass)
 local PetDataBaseClass = CreateClass(function(self)
     self.Pets = {
         Pet = {
-            Instance = nil
-        }
+            Rarity = "Basic",
+            Instance = game.ReplicatedStorage.Pets.Basic.Cat,
+        },
+
     }
 
     self.GetPetData = function(PetName)
