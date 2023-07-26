@@ -16,7 +16,10 @@ return(function(self)
         end)
     end
 
-    self.Initiate = function()
+    self.Initiate = function(i, v)
+        self.TextLabel = i
+        self.DataType = v
+        
         self.SetText()
         self.DetectDataChange()
     end

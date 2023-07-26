@@ -41,7 +41,7 @@ return function(self)
                         end
 
                         game.ReplicatedStorage.LocalSignals.PlayerDataChange:Fire(self.Instance)
-                        game.ReplicatedStorage.RemoteSignals.PlayerDataChange:Fire(self.Instance)
+                        game.ReplicatedStorage.RemoteSignals.PlayerDataChange:FireClient(self.Instance)
                     end
                            
                     return v.Data
@@ -49,7 +49,7 @@ return function(self)
             end
         end 
 
-        game.ReplicatedStorage.RemoteSignals.GetPlayerData.OnInvoke = function(PlayerInst)
+        game.ReplicatedStorage.RemoteSignals.GetPlayerData.OnServerInvoke = function(PlayerInst)
             for i, v in pairs(self.CurrentPlayerObjects) do
                 if v.Instance == PlayerInst then
                     return v.Data

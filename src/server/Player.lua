@@ -13,7 +13,7 @@ return function(self)
 
     self.BaseData = {
         OwnedPets = {"Pet"},
-        PetMultiplier = 1,
+        Multiplier = 1,
         Cash = 0,
         Strength = 5,
     }
@@ -40,7 +40,7 @@ return function(self)
         end
 
         game.ReplicatedStorage.LocalSignals.PlayerDataChange:Fire(self.Instance)
-        game.ReplicatedStorage.RemoteSignals.PlayerDataChange:Fire(self.Instance)       
+        game.ReplicatedStorage.RemoteSignals.PlayerDataChange:FireClient(self.Instance)
     end
 
     self.LoadPets = function()
