@@ -54,13 +54,16 @@ return function(self)
             Instance.new("BoolValue", PetPos).Name = "Occupied"
 
             if i == 1 then
-                PetPos.Position = self.Character.HumanoidRootPart.CFrame.LookVector * -5 
+                PetPos.Position = self.Character.HumanoidRootPart.CFrame.LookVector * -5 - Vector3.new(0, 2, 0)
+                PetPos.Orientation += Vector3.new(0, 180, 0)
             elseif i == 2 then
-                PetPos.Position = self.Character.HumanoidRootPart.CFrame.RightVector * 5
+                PetPos.Position = self.Character.HumanoidRootPart.CFrame.RightVector * 5 - Vector3.new(0, 2, 0)
+                PetPos.Orientation += Vector3.new(0, 90, 0)
             elseif i == 3 then
-                PetPos.Position = self.Character.HumanoidRootPart.CFrame.RightVector * -5
+                PetPos.Position = self.Character.HumanoidRootPart.CFrame.RightVector * -5 - Vector3.new(0, 2, 0)
+                PetPos.Orientation += Vector3.new(0, -90, 0)
             elseif i == 4 then
-                PetPos.Position = self.Character.HumanoidRootPart.CFrame.LookVector * 5
+                PetPos.Position = self.Character.HumanoidRootPart.CFrame.LookVector * 5 - Vector3.new(0, 2, 0)
             end
         end
 
@@ -72,5 +75,9 @@ return function(self)
 
     self.OnLeave = function()
         self.SaveData()
+    end
+
+    self.ThrowPet = function()
+        
     end
 end

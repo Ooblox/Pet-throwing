@@ -20,7 +20,9 @@ return function(self)
         local Orient = Instance.new("AlignOrientation", self.Instance.PrimaryPart)
         Bp.Attachment0 = Att
         Orient.Attachment0 = Att
-
+        Bp.Responsiveness = 20
+        Orient.Responsiveness = 20
+        
         for i = 1, 4 do
             if not self.PlayerOwnerObj.Character.HumanoidRootPart[i].Occupied.Value then
                 self.Instance:MoveTo(self.PlayerOwnerObj.Character.HumanoidRootPart[i].WorldPosition)
@@ -29,7 +31,7 @@ return function(self)
                 Orient.Attachment1 = self.PlayerOwnerObj.Character.HumanoidRootPart[i]
                 
                 self.PlayerOwnerObj.Character.HumanoidRootPart[i].Occupied.Value = true
-                break 
+                break
             end
         end
     end
