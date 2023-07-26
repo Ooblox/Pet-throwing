@@ -29,16 +29,21 @@ return function(self)
         game.ReplicatedStorage.LocalSignals.InteractPlayerData.OnInvoke = function(PlayerInst, Data, Type)
             for i, v in pairs(self.CurrentPlayerObjects) do
                 if v.Instance == PlayerInst then
-                    if Type == "Replace" then
-                        for i, v in pairs(Data) do
-                            v.Data[i] = v
+                    if Data then
+                        if Type == "Replace" then
+                            for i, v in pairs(Data) do
+                                v.Data[i] = v
+                            end
+                        elseif Type == "Add" then
+                            for i, v in pairs(Data) do
+                                v.Data[i] += v
+                            end                      
                         end
-                    elseif Type == "Add" then
-                        for i, v in pairs(Data) do
-                            v.Data[i] += v
-                        end                      
-                    end
 
+                        game.ReplicatedStorage.LocalSignals.PlayerDataChange:Fire(self.Instance)
+                        game.ReplicatedStorage.RemoteSignals.PlayerDataChange:Fire(self.Instance)
+                    end
+                           
                     return v.Data
                 end
             end

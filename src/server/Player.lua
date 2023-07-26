@@ -14,7 +14,7 @@ return function(self)
     self.BaseData = {
         OwnedPets = {"Pet"},
         PetMultiplier = 1,
-        Coins = 0,
+        Cash = 0,
         Strength = 5,
     }
 
@@ -25,18 +25,22 @@ return function(self)
     end
 
     self.LoadData = function()
-        print(self.Instance)
         local SavedData = Ds:GetAsync(self.Instance.UserId)
 
         if self.USE_SAVED_DATA then
+            self.Data = self.BaseData
+
             if SavedData then
-                self.Data = SavedData
-            else
-                self.Data = self.BaseData
+                for i, v in pairs(SavedData) do
+                    self.Data[i] = v
+                end
             end
         else
             self.Data = self.BaseData
         end
+
+        game.ReplicatedStorage.LocalSignals.PlayerDataChange:Fire(self.Instance)
+        game.ReplicatedStorage.RemoteSignals.PlayerDataChange:Fire(self.Instance)       
     end
 
     self.LoadPets = function()
