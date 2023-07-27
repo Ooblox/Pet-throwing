@@ -9,9 +9,7 @@ return function(self)
     self.USE_SAVED_DATA = false
     self.Instance = nil
     self.Character = nil
-    self.Data = nil
-
-    self.BaseData = {
+    self.Data = {
         OwnedPets = {"Pet"},
         Multiplier = 1,
         Cash = 0,
@@ -28,15 +26,11 @@ return function(self)
         local SavedData = Ds:GetAsync(self.Instance.UserId)
 
         if self.USE_SAVED_DATA then
-            self.Data = self.BaseData
-
             if SavedData then
                 for i, v in pairs(SavedData) do
                     self.Data[i] = v
                 end
             end
-        else
-            self.Data = self.BaseData
         end
 
         game.ReplicatedStorage.LocalSignals.PlayerDataChange:Fire(self.Instance)
