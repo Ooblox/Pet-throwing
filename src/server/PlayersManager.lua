@@ -26,7 +26,7 @@ return function(self)
     end
     
     self.PlayerDataInterface = function()
-        game.ReplicatedStorage.LocalSignals.InteractPlayerData.OnInvoke = function(PlayerInst, Data, Type)
+        game.ServerScriptService.Signals.InteractPlayerData.OnInvoke = function(PlayerInst, Data, Type)
             for i, v in pairs(self.CurrentPlayerObjects) do
                 if v.Instance == PlayerInst then
                     if Data then
@@ -40,7 +40,7 @@ return function(self)
                             end                      
                         end
 
-                        game.ReplicatedStorage.LocalSignals.PlayerDataChange:Fire(self.Instance)
+                        game.ServerScriptService.Signals.PlayerDataChange:Fire(self.Instance)
                         game.ReplicatedStorage.RemoteSignals.PlayerDataChange:FireClient(self.Instance)
                     end
                            

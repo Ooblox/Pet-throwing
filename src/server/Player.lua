@@ -10,11 +10,13 @@ return function(self)
     self.Instance = nil
     self.Character = nil
     self.Data = {
-        OwnedPets = {"Pet"},
+        OwnedPets = {},
         Multiplier = 1,
         Cash = 0,
         Strength = 5,
     }
+    self.ThrowDebounce = nil
+    self.ThrowPowerMeter = 100
 
     self.SaveData = function()
         if self.USE_SAVED_DATA then
@@ -44,6 +46,41 @@ return function(self)
     self.OnJoin = function(PlrInstance)
         self.Instance = PlrInstance
         self.LoadData()
+
+        self.InputHandler()
+
+        self.OnCharacterAdded()
+    end
+
+    self.InputHandler = function()
+        local HoldingLeftClick 
+
+        game.ReplicatedStorage.RemoteSignals.UserInput.OnServerEvent:Connect(function(InputState, InputType)
+            if InputState == Enum.UserInputState.Begin then
+                if InputType.UserInputType == Enum.UserInputType.MouseButton1 and not self.ThrowDebounce then
+                    HoldingLeftClick = true
+
+                    for i = 1, 100 do
+                        self.ThrowPowerMeter = i
+
+                        if not HoldingLeftClick then
+                            break
+                        end
+                    end
+                end
+            else
+                if InputType.UserInputType == Enum.UserInputType.MouseButton1 and not self.ThrowDebounce then
+                    HoldingLeftClick = nil
+                    self.ThrowDebounce = true
+                    
+                    
+                end
+            end
+
+        end)
+    end
+
+    self.OnCharacterAdded = function()
         self.Character = self.Instance.Character or self.Instance.CharacterAdded:Wait()
 
         local PetFolder = Instance.new("Folder", self.Character)
@@ -71,7 +108,7 @@ return function(self)
         for i, v in pairs(self.Data.OwnedPets) do
             local NewPet = PetClass.new()
             NewPet.Spawn(v, self)
-        end
+        end                
     end
 
     self.OnLeave = function()
@@ -79,6 +116,30 @@ return function(self)
     end
 
     self.ThrowPet = function()
-        
+        local TouchingPlatform
+
+        for i, v in pairs(self.Character):GetChildren() do
+            if v:IsA("BasePart") then
+                local Touching = v:GetTouchingParts()
+
+                for i, v in pairs(Touching) do
+                    if v == game.Workspace.ThrowZone.Platform then
+                        TouchingPlatform = true
+                    end
+                end
+            end
+        end
+
+        if TouchingPlatform then
+            self.Character.HumanoidRootPart.Anchored = true
+            self.Character.HumanoidRootPart.Orientation = game.Workspace.ThrowZone.Direction.Orientation
+
+            local ThrowingPet = self.Character.Pets:GetChildren()[math.random(1, #self.Character.Pets:GetChildren())]
+            ThrowingPet.PrimaryPart.Anchored = true
+            ThrowingPet.PrimaryPart.Position = self.Character:FindFirstChild("Right Arm") or self.Character:FindFirstChild("RightHand")
+
+
+            self.Character.Humanoid:LoadAnimation()
+        end
     end
 end
