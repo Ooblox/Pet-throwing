@@ -17,6 +17,7 @@ return function(self)
     }
     self.ThrowDebounce = nil
     self.ThrowPowerMeter = 100
+    self.HoldingLeftClick = nil
 
     self.SaveData = function()
         if self.USE_SAVED_DATA then
@@ -53,27 +54,18 @@ return function(self)
     end
 
     self.InputHandler = function()
-        local HoldingLeftClick 
-
         game.ReplicatedStorage.RemoteSignals.UserInput.OnServerEvent:Connect(function(InputState, InputType)
             if InputState == Enum.UserInputState.Begin then
-                if InputType.UserInputType == Enum.UserInputType.MouseButton1 and not self.ThrowDebounce then
-                    HoldingLeftClick = true
-
-                    for i = 1, 100 do
-                        self.ThrowPowerMeter = i
-
-                        if not HoldingLeftClick then
-                            break
-                        end
+                if InputType.UserInputType == Enum.UserInputType.MouseButton1 then
+                    self.HoldingLeftClick = true
+                  
+                    if not self.ThrowDebounce then
+                        self.ThrowPet()
                     end
                 end
             else
-                if InputType.UserInputType == Enum.UserInputType.MouseButton1 and not self.ThrowDebounce then
-                    HoldingLeftClick = nil
-                    self.ThrowDebounce = true
-                    
-                    
+                if InputType.UserInputType == Enum.UserInputType.MouseButton1 then
+                    self.HoldingLeftClick = nil
                 end
             end
 
@@ -131,15 +123,31 @@ return function(self)
         end
 
         if TouchingPlatform then
+            self.ThrowDebounce = true
+
             self.Character.HumanoidRootPart.Anchored = true
             self.Character.HumanoidRootPart.Orientation = game.Workspace.ThrowZone.Direction.Orientation
+
 
             local ThrowingPet = self.Character.Pets:GetChildren()[math.random(1, #self.Character.Pets:GetChildren())]
             ThrowingPet.PrimaryPart.Anchored = true
             ThrowingPet.PrimaryPart.Position = self.Character:FindFirstChild("Right Arm") or self.Character:FindFirstChild("RightHand")
+    
+            local MouseInfo = game.ReplicatedStorage.GetMouseInfo:InvokeClient(self.Instance)
 
+            local PowerGaugeGui = game.ReplicatedStorage.Guis.PowerGauge:Clone()
+            PowerGaugeGui.Parent = self.Instance.PlayerGui
+            PowerGaugeGui.Position = UDim2.new(0, MouseInfo.X, 0, MouseInfo.Y)
 
-            self.Character.Humanoid:LoadAnimation()
+            for i = 1, 100 do
+                self.ThrowPowerMeter = i
+    
+                if not self.HoldingLeftClick or i == 100 then
+                    self.Character.Humanoid:LoadAnimation(game.ReplicatedStorage.Animations.Throw):Play()
+
+                    break
+                end
+            end
         end
     end
 end
