@@ -6,9 +6,9 @@ local Player = game.Players.LocalPlayer
 
 return(function(self)
     self.TextLabels = {
-        [Player.PlayerGui:WaitForChild("Menu").Top.Cash.TextLabel] = "Cash",
-        [Player.PlayerGui.Menu.Top.Multiplier.TextLabel] = "Multiplier",
-        [Player.PlayerGui.Menu.Top.ThrowingPower.TextLabel] = "Strength",
+        [Player.PlayerGui:WaitForChild("MainFrames").Top.Cash.TextLabel] = "Cash",
+        [Player.PlayerGui.MainFrames.Top.Multiplier.TextLabel] = "Multiplier",
+        [Player.PlayerGui.MainFrames.Top.ThrowingPower.TextLabel] = "Strength",
 
     }
 
