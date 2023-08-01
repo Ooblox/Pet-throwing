@@ -1,15 +1,21 @@
 local UserInputService = game:GetService("UserInputService")
 
 return function(self)
-    self.OnClick = function()
+    self.ListenInput = function()
         UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-            if gameProcessedEvent then return end
+            --if gameProcessedEvent then return end
 
-            game.ReplicatedStorage.RemoteSignals.UserInput:FireServer(input.UserInputState, input.UserInputType)
+            print("ckluc")
+            game.ReplicatedStorage.RemoteSignals.UserInput:FireServer("Began", input.UserInputType)
+        end)
+
+        UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
+            print("ckluc")
+            game.ReplicatedStorage.RemoteSignals.UserInput:FireServer("Ended", input.UserInputType)
         end)
     end
 
     self.Initiate = function()
-        self.OnClick()
+        self.ListenInput()
     end
 end

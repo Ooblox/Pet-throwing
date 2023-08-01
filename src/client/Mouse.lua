@@ -5,7 +5,7 @@ return function(self)
         game.ReplicatedStorage.RemoteSignals.GetMouseInfo.OnClientInvoke = function()
             return {
                 ScreenPos = {MouseInst.X, MouseInst.Y}, 
-                HitPos = MouseInst.Hit.CFrame,
+                HitPos = MouseInst.Hit,
             }
         end
     end

@@ -8,6 +8,7 @@ return function(self)
 
     
     self.Initiate = function()
+        print("sudfjs")
         local InputController = InputControllerClass.new()
         InputController.Initiate()
 
