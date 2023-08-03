@@ -189,8 +189,9 @@ return function(self)
                 end
             end
 
+            repeat wait() until (ThrowingPet.PrimaryPart.AssemblyLinearVelocity).Magnitude < 1
             wait(3)
-
+            
             game.ReplicatedStorage.RemoteSignals.Camera:FireClient(self.Instance, ThrowingPet.PrimaryPart, "End")
 
             ThrowingPet.PrimaryPart.AlignPosition.Attachment1 = OriginalAttachment

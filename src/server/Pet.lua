@@ -34,9 +34,5 @@ return function(self)
                 break
             end
         end
-
-        while wait() do
-            print(self.Instance.PrimaryPart.AssemblyLinearVelocity)
-        end
     end
 end
