@@ -5,12 +5,10 @@ return function(self)
         UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
             --if gameProcessedEvent then return end
 
-            print("ckluc")
             game.ReplicatedStorage.RemoteSignals.UserInput:FireServer("Began", input.UserInputType)
         end)
 
         UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
-            print("ckluc")
             game.ReplicatedStorage.RemoteSignals.UserInput:FireServer("Ended", input.UserInputType)
         end)
     end
